@@ -1,7 +1,7 @@
 /**
  * \file
  *
- * \brief System configuration file for ATSAMG55J19
+ * \brief System configuration file for ATSAMG55
  *
  * Copyright (c) 2017 Atmel Corporation, a wholly owned subsidiary of Microchip Technology Inc.
  *
@@ -25,7 +25,7 @@
  *
  */
 
-#include "samg55j19.h"
+#include "sam.h"
 
 /** \cond 0 */
 /* *INDENT-OFF* */

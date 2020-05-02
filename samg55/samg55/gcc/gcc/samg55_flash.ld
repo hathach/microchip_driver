@@ -1,7 +1,7 @@
 /**
  * \file
  *
- * \brief GCC linker script (sram) for ATSAMG55J19
+ * \brief GCC linker script (flash) for ATSAMG55
  *
  * Copyright (c) 2017 Atmel Corporation, a wholly owned subsidiary of Microchip Technology Inc.
  *
@@ -26,7 +26,7 @@
  */
 
 /*------------------------------------------------------------------------------
- *      Linker script for running in internal SRAM on the ATSAMG55J19
+ *      Linker script for running in internal FLASH on the ATSAMG55
  *----------------------------------------------------------------------------*/
 
 OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
@@ -95,7 +95,15 @@ SECTIONS
 
         . = ALIGN(4);
         _efixed = .;            /* End of text section */
-    } > ram
+    } > rom
+
+    /* .ARM.exidx is sorted, so has to go in its own output section.  */
+    PROVIDE_HIDDEN (__exidx_start = .);
+    .ARM.exidx :
+    {
+      *(.ARM.exidx* .gnu.linkonce.armexidx.*)
+    } > rom
+    PROVIDE_HIDDEN (__exidx_end = .);
 
     . = ALIGN(4);
     _etext = .;
@@ -121,6 +129,7 @@ SECTIONS
         . = ALIGN(4);
         _ebss = . ;
         _ezero = .;
+        end = .;
     } > ram
 
     /* heap section */
@@ -143,16 +152,7 @@ SECTIONS
         _estack = .;
     } > ram
 
-    /* .ARM.exidx is sorted, so has to go in its own output section.  */
-    PROVIDE_HIDDEN (__exidx_start = .);
-    .ARM.exidx :
-    {
-      *(.ARM.exidx* .gnu.linkonce.armexidx.*)
-    } > ram
-    PROVIDE_HIDDEN (__exidx_end = .);
-
     . = ALIGN(4);
     _end = . ;
     _ram_end_ = ORIGIN(ram) + LENGTH(ram) - 1 ;
 }
-

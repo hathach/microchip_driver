@@ -1,7 +1,7 @@
 /**
  * \file
  *
- * \brief IAR startup file for ATSAMG55J19
+ * \brief GCC startup file for ATSAMG55
  *
  * Copyright (c) 2017 Atmel Corporation, a wholly owned subsidiary of Microchip Technology Inc.
  *
@@ -25,16 +25,24 @@
  *
  */
 
-#include "samg55j19.h"
+#include "sam.h"
 
-typedef void (*intfunc)(void);
-typedef union {
-	intfunc __fun;
-	void *  __ptr;
-} intvec_elem;
+/* Initialize segments */
+extern uint32_t _sfixed;
+extern uint32_t _efixed;
+extern uint32_t _etext;
+extern uint32_t _srelocate;
+extern uint32_t _erelocate;
+extern uint32_t _szero;
+extern uint32_t _ezero;
+extern uint32_t _sstack;
+extern uint32_t _estack;
 
-void __iar_program_start(void);
-int  __low_level_init(void);
+/** \cond DOXYGEN_SHOULD_SKIP_THIS */
+int main(void);
+/** \endcond */
+
+void __libc_init_array(void);
 
 /* Reset handler */
 void Reset_Handler(void);
@@ -43,62 +51,55 @@ void Reset_Handler(void);
 void Dummy_Handler(void);
 
 /* Cortex-M4 core handlers */
-#pragma weak NonMaskableInt_Handler   = Dummy_Handler
-#pragma weak HardFault_Handler        = Dummy_Handler
-#pragma weak MemoryManagement_Handler = Dummy_Handler
-#pragma weak BusFault_Handler         = Dummy_Handler
-#pragma weak UsageFault_Handler       = Dummy_Handler
-#pragma weak SVCall_Handler           = Dummy_Handler
-#pragma weak DebugMonitor_Handler     = Dummy_Handler
-#pragma weak PendSV_Handler           = Dummy_Handler
-#pragma weak SysTick_Handler          = Dummy_Handler
+void NonMaskableInt_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
+void HardFault_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
+void MemoryManagement_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
+void BusFault_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
+void UsageFault_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
+void SVCall_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
+void DebugMonitor_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
+void PendSV_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
+void SysTick_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
 
 /* Peripherals handlers */
-#pragma weak SUPC_Handler     = Dummy_Handler
-#pragma weak RSTC_Handler     = Dummy_Handler
-#pragma weak RTC_Handler      = Dummy_Handler
-#pragma weak RTT_Handler      = Dummy_Handler
-#pragma weak WDT_Handler      = Dummy_Handler
-#pragma weak PMC_Handler      = Dummy_Handler
-#pragma weak EFC_Handler      = Dummy_Handler
-#pragma weak FLEXCOM7_Handler = Dummy_Handler
-#pragma weak FLEXCOM0_Handler = Dummy_Handler
-#pragma weak FLEXCOM1_Handler = Dummy_Handler
-#pragma weak PIOA_Handler     = Dummy_Handler
-#pragma weak PIOB_Handler     = Dummy_Handler
-#pragma weak PDMIC0_Handler   = Dummy_Handler
-#pragma weak FLEXCOM2_Handler = Dummy_Handler
-#pragma weak MEM2MEM_Handler  = Dummy_Handler
-#pragma weak I2SC0_Handler    = Dummy_Handler
-#pragma weak I2SC1_Handler    = Dummy_Handler
-#pragma weak PDMIC1_Handler   = Dummy_Handler
-#pragma weak FLEXCOM3_Handler = Dummy_Handler
-#pragma weak FLEXCOM4_Handler = Dummy_Handler
-#pragma weak FLEXCOM5_Handler = Dummy_Handler
-#pragma weak FLEXCOM6_Handler = Dummy_Handler
-#pragma weak TC0_Handler      = Dummy_Handler
-#pragma weak TC1_Handler      = Dummy_Handler
-#pragma weak TC2_Handler      = Dummy_Handler
-#pragma weak TC3_Handler      = Dummy_Handler
-#pragma weak TC4_Handler      = Dummy_Handler
-#pragma weak TC5_Handler      = Dummy_Handler
-#pragma weak ADC_Handler      = Dummy_Handler
-#pragma weak UHP_Handler      = Dummy_Handler
-#pragma weak UDP_Handler      = Dummy_Handler
-#pragma weak CRCCU_Handler    = Dummy_Handler
+void SUPC_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
+void RSTC_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
+void RTC_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
+void RTT_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
+void WDT_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
+void PMC_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
+void EFC_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
+void FLEXCOM7_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
+void FLEXCOM0_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
+void FLEXCOM1_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
+void PIOA_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
+void PIOB_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
+void PDMIC0_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
+void FLEXCOM2_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
+void MEM2MEM_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
+void I2SC0_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
+void I2SC1_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
+void PDMIC1_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
+void FLEXCOM3_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
+void FLEXCOM4_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
+void FLEXCOM5_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
+void FLEXCOM6_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
+void TC0_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
+void TC1_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
+void TC2_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
+void TC3_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
+void TC4_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
+void TC5_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
+void ADC_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
+void UHP_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
+void UDP_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
+void CRCCU_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
 
 /* Exception Table */
-#pragma language = extended
-#pragma segment  = "CSTACK"
+__attribute__((section(".vectors"), used)) const DeviceVectors exception_table = {
 
-/* The name "__vector_table" has special meaning for C-SPY: */
-/* it is where the SP start value is found, and the NVIC vector */
-/* table register (VTOR) is initialized to this address if != 0 */
-
-#pragma section                    = ".intvec"
-#pragma location                   = ".intvec"
-const DeviceVectors __vector_table = {
-    (void *)__sfe("CSTACK"),
+    /* Configure Initial Stack Pointer, using linker-generated symbols */
+    .pvStack = (void *)(&_estack),
 
     .pfnReset_Handler            = (void *)Reset_Handler,
     .pfnNonMaskableInt_Handler   = (void *)NonMaskableInt_Handler,
@@ -169,26 +170,42 @@ const DeviceVectors __vector_table = {
     .pfnCRCCU_Handler    = (void *)CRCCU_Handler     /* 49 Cyclic Redundancy Check Calculation Unit */
 };
 
-/**------------------------------------------------------------------------------
- * This is the code that gets called on processor reset. To initialize the
- * device.
- *------------------------------------------------------------------------------*/
-int __low_level_init(void)
-{
-	uint32_t *pSrc = __section_begin(".intvec");
-
-	SCB->VTOR = ((uint32_t)pSrc & SCB_VTOR_TBLOFF_Msk);
-
-	return 1; /* if return 0, the data sections will not be initialized */
-}
-
-/**------------------------------------------------------------------------------
- * This is the code that gets called on processor reset. To initialize the
- * device.
- *------------------------------------------------------------------------------*/
+/**
+ * \brief This is the code that gets called on processor reset.
+ * To initialize the device, and call the main() routine.
+ */
 void Reset_Handler(void)
 {
-	__iar_program_start();
+	uint32_t *pSrc, *pDest;
+
+	/* Initialize the relocate segment */
+	pSrc  = &_etext;
+	pDest = &_srelocate;
+
+	if (pSrc != pDest) {
+		for (; pDest < &_erelocate;) {
+			*pDest++ = *pSrc++;
+		}
+	}
+
+	/* Clear the zero segment */
+	for (pDest = &_szero; pDest < &_ezero;) {
+		*pDest++ = 0;
+	}
+
+	/* Set the vector table base address */
+	pSrc      = (uint32_t *)&_sfixed;
+	SCB->VTOR = ((uint32_t)pSrc & SCB_VTOR_TBLOFF_Msk);
+
+	/* Initialize the C library */
+	__libc_init_array();
+
+	/* Branch to main function */
+	main();
+
+	/* Infinite loop */
+	while (1)
+		;
 }
 
 /**
